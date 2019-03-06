@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{ouunit}[2016/05/1 1.30 (Robert Hasson, all rights reserved)]
+\ProvidesClass{ouunit}[2016/05/1 1.31 (Robert Hasson, all rights reserved)]
 
 %switch for draft mode
 \newif\ifdraft
@@ -523,7 +523,7 @@
   \def\@fs@capt##1##2{\parbox{\linewidth}{\raggedright{\tablehdfont ##1}\quad{\tablecaptfont ##2}}}%
   \def\@fs@pre{}%
   \def\@fs@post{\vspace{-1.5ex}}%to balance whitespace
-  \def\@fs@mid{\vspace\abovecaptionskip\relax}%
+  \def\@fs@mid{\vspace{\abovecaptionskip}}%
   \let\@fs@iftopcapt\iftrue}
 \floatstyle{tables}
 \floatplacement{table}{H}
@@ -535,7 +535,7 @@
 
 %define a float style for table*
 \newcommand\fs@tablestars{%
-  \def\@fs@capt##1##2{\parbox{\linewidth}{\raggedright\tablecaptfont ##2}\par}%
+  \def\@fs@capt##1##2{\parbox{\linewidth}{\raggedright\tablecaptfont ##2}\par\vspace{\abovecaptionskip}}%
   \def\@fs@pre{}%
   \def\@fs@post{\vspace{-1.5ex}}%to balance whitespace
   \def\@fs@mid{}%
