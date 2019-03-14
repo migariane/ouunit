@@ -1,0 +1,100 @@
+\documentclass{ouunit}
+%  options available
+% [final,solutionsatend,twocolumnsolutions,reduceda4]
+
+\usepackage{subfiles}
+
+%metadata
+\modulecode{Mxxx}
+\moduletitle{Module title}
+
+%friendly names for box styles
+\newenvironment{highlight}[1][]{\begin{style2box}[#1]}{\end{style2box}}
+
+%module specific commands
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\cosech}{cosech}
+
+%make page numbers in chapters follow book numbering
+\appto{\makefrontpages}{\pagestyle{empty}\cleardoublepage\pagestyle{plain}\ifx\@unittitle\@empty\relax\else
+\makeatletter
+\InputIfFileExists{book.cnt}{}{}
+\makeatother\fi}
+
+\begin{document}
+\pagenumbering{gobble}
+%code here is only processed when the book is compiled
+%open "continuity file" for continuing counters
+\newwrite\cntwrite\immediate\openout\cntwrite\jobname.cnt\relax
+%redefine chapter heading --- must be in document as subfiles use preamble
+\makeatletter
+\renewcommand{\makefrontpages}{\ifx\@unittitle\@empty\relax\else
+\strut\vfill
+\pagestyle{empty}
+\section*{\sf Unit \@unitid}
+{\Huge\sf \@unittitle}
+\addtocontents{toc}{\protect\vspace{3ex}}
+\edef\rh@temp{\noexpand\addcontentsline{toc}{section}{\@title}}\rh@temp\let\rh@temp\relax
+\vfill\vfill
+\cleardoublepage
+\fi
+%Add page number to "continuity" file
+\immediate\write\cntwrite{\string\ifdefstring{\string\@unitid}{\@unitid}{\string\setcounter{page}{\the\value{page}}}{}}%
+\pagestyle{plain}
+%reset counters at start of unit
+\setcounter{section}{0}
+\setcounter{equation}{0}
+\setcounter{exercise}{0}
+\setcounter{example}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+%reopen solution files
+\immediate\openout\exercises@write\jobname.ex
+\immediate\openout\activities@write\jobname.act
+}
+\let\realprintindex\printindex
+\def\printindex{}
+\pagestyle{empty}
+\strut\marginnote{\oulogo}[-6mm]\par
+
+\vfill
+\section*{\sf \@modulecode}
+
+{\huge\sf \@moduletitle}
+
+\vspace{2ex}
+
+\section*{\sf Book nn}
+
+{\Huge\sf Book title}
+\vfill\vfill\vfill
+\makeatother
+\newpage
+\newgeometry{right=55pt,left=50pt,top=70pt,bottom=40pt} % Margins adjusted
+{\small
+    \emph{Cover image}: \par
+Title verso text.\par
+\vfill\vfill
+\vfill
+    ISBN xxx\par
+    1.1
+}% End of \small
+\restoregeometry
+\newpage
+\tableofcontents
+\cleardoublepage
+\pagestyle{plain}
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\subfile{chap1}
+\cleardoublepage
+\subfile{chap2}
+\cleardoublepage
+\realprintindex
+\end{document}
+%code here only runs when the chapters are processed individually
+%code to make cross-chapter references resolve in stand-alone units
+\usepackage{xr}
+\edef\fname{\jobname}
+\ifdefstring{\fname}{chap1}{}{\externaldocument{chap1}}
+\ifdefstring{\fname}{chap2}{}{\externaldocument{chap2}}
